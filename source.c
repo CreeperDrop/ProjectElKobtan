@@ -33,9 +33,7 @@ void main(void) {
     unsigned int voltageReading, lightReading;
     
     TRISA = 1;      //A is input 
-    TRISB = 0;      //B, C, D are outputs
-    TRISC = 0;
-    TRISD = 0;
+    TRISB = 0;      //B is output
     
     adcInit();      //Initialise the ADC with the desired settings.
     
@@ -43,22 +41,18 @@ void main(void) {
         
         voltageReading = adcRead();     //Get the value read by the ADC
         
-        PORTC = voltageReading >> 2;    //For testing purposes, remove later
-        PORTB = ADRESH;
-        
-        
         __delay_ms(100);
         
         lightReading = lightLevel(voltageReading);
         
         if(lightReading == 0)
-            PORTD = 0x00;
+            PORTB = 0x00;
         else if (lightReading > 0 && lightReading <= 341)
-            PORTD = 0x07;
+            PORTB = 0x07;
         else if(lightReading > 341 && lightReading <= 682)
-            PORTD = 0x03;
+            PORTB = 0x03;
         else if(lightReading > 682)
-            PORTD = 0x01;
+            PORTB = 0x01;
     }
     
     return;
@@ -79,7 +73,7 @@ unsigned int adcRead(){
     
     unsigned int reading;
     
-    __delay_ms(1);          //delay tome sure everything is okay
+    __delay_ms(1);          //delay to make sure everything is okay
     adcGo();                //Start ADC
     while(ADCON0bits.GO_DONE == 1);         //Wait until conversion is done 
  
