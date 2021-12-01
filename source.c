@@ -9,7 +9,7 @@
 // 'C' source line config statements
 
 // CONFIG
-#pragma config FOSC = EXTRC     // Oscillator Selection bits (RC oscillator)
+#pragma config FOSC = HS     // Oscillator Selection bits (High Speed Crystal Oscillator)
 #pragma config WDTE = OFF        // Watchdog Timer Enable bit (WDT enabled)
 #pragma config PWRTE = OFF      // Power-up Timer Enable bit (PWRT disabled)
 #pragma config BOREN = ON       // Brown-out Reset Enable bit (BOR enabled)
@@ -33,7 +33,8 @@ void main(void) {
     unsigned int voltageReading, lightReading;
     
     TRISA = 1;      //A is input 
-    TRISB = 0;      //B is output
+    TRISB = 0;      //B, D are output
+    TRISD = 0;
     
     adcInit();      //Initialise the ADC with the desired settings.
     
@@ -53,6 +54,8 @@ void main(void) {
             PORTB = 0x03;
         else if(lightReading > 682)
             PORTB = 0x01;
+        
+        PORTD = 0x01;               //Lighting an indicator LED in RD0 to indicate that everything is working fine
     }
     
     return;
@@ -60,7 +63,7 @@ void main(void) {
 
 
 void adcGo(void){
-    ADCON0bits.GO = 1;
+    ADCON0bits_t.GO = 1;
 }
 void adcInit(void){
     
