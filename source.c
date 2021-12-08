@@ -46,9 +46,7 @@ void main(void) {
         
         lightReading = lightLevel(voltageReading);
         
-        if(lightReading == 0)
-            PORTB = 0x00;
-        else if (lightReading > 0 && lightReading <= 341)
+    if (lightReading > 0 && lightReading <= 341)
             PORTB = 0x07;
         else if(lightReading > 341 && lightReading <= 682)
             PORTB = 0x03;
